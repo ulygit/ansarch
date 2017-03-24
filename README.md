@@ -27,8 +27,8 @@ flexibility._
 Initial Setup
 -------------
 
-    $ git clone https://github.com/elasticdog/hyperboriarch.git
-    $ cd hyperboriarch/
+    $ git clone https://github.com/ulygit/ansarch.git
+    $ cd ansarch/
 
 ### Prerequisites
 
