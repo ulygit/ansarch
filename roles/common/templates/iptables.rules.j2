@@ -28,8 +28,5 @@
 
 # add accept rules to the TCP and UDP chains accordingly
 -A TCP -p tcp -m tcp --dport 22 -m comment --comment "ssh" -j ACCEPT
-{% if cjdns_port.rc is defined and cjdns_port.rc == 0 %}
--A UDP -p udp -m udp --dport {{ cjdns_port.stdout }} -m comment --comment "cjdns" -j ACCEPT
-{% endif %}
 
 COMMIT

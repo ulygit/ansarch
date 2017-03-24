@@ -1,18 +1,11 @@
-Hyperboriarch
+Ansarch
 =============
 
-Hyperboriarch is a set of [Ansible](http://www.ansibleworks.com/)
+Ansarch is a set of [Ansible](http://www.ansibleworks.com/)
 playbooks for installing, configuring, and maintaining
-[Project Meshnet](https://projectmeshnet.org/)'s
-[cjdns](https://github.com/cjdelisle/cjdns#readme) routing software on
 [Arch Linux](https://www.archlinux.org/) hosts. It can also perform the
 basic tasks necessary to safeguard a freshly installed server, so you can
-go from nothing to a relatively secure cjdns node in no time flat. Welcome
-to [Hyperboria](http://hyperboria.net/)!
-
-> If you're new to the project and looking to get connected to the
-> network, first you'll need to
-> [find a peer](https://ezcrypt.it/7d7n#BmTgRe7XkKFbhhS9lGUsxUUb).
+go from nothing to a relatively secure system in no time flat.
 
 Overview
 --------
@@ -26,20 +19,6 @@ tasks will be handled for you by the "common" role:
 * basic ingress firewall rules will be put into place
 * kernel parameters will be set to harden the network stack
 * the Network Time Protocol (NTP) service will be configured
-* vnStat will be installed to monitor network traffic usage
-
-...and the following tasks will be handled by the "cjdns" role:
-
-* cjdns and (optionally) [cjdcmd](https://github.com/inhies/cjdcmd#readme)
-  will be built and installed from the latest upstream git revision
-* a host specific _cjdroute.conf_ file will be copied over from the
-  controlling machine
-
-There are a lot of little conveniences automatically handled for you as
-well. For instance, the mirrorlist will only be updated on the initial
-run, the firewall will open up your cjdns port if it finds a valid
-_cdjroute.conf_ file, cdjcmd will generate its required _~/.cjdadmin_
-file, etc..
 
 _Note that you don't have to apply all of these tasks; everything is
 [tagged](http://www.ansibleworks.com/docs/playbooks2.html#tags) for
@@ -59,7 +38,7 @@ Initial Setup
 * an [inventory file](http://www.ansibleworks.com/docs/patterns.html)
 
 For the inventory hosts file, it's easiest to keep it in the same
-directory as Hyperboriarch so Ansible can find the correct *group_vars*.
+directory as Ansarch so Ansible can find the correct *group_vars*.
 By default, things are configured to look for a file named "hosts", but
 you can override that either by setting the `ANSIBLE_HOSTS` environment
 variable to point to its full path, or use the `-i <inventory file>` flag
@@ -88,69 +67,16 @@ Now you should be able to connect as yourself for all future tasks:
 
     $ ansible all -m ping
 
-### cjdroute.conf
-
-The last thing we need to worry about is the _/etc/cjdroute.conf_ file
-that cjdns needs in order to run. It should be unique per host and
-contains your cryptographic key pair and network peering data.
-
-##### Use an Existing Config
-
-If you already have a _cjdroute.conf_ file, simply copy it to the expected
-location on the controlling machine and Ansible will push it to the proper
-host:
-
-    $ cp <path-to>/cjdroute.conf roles/cjdns/files/{{ inventory_hostname }}-cjdroute.conf
-
-As a concrete example, let's say you're managing a host
-"alice.example.com", and you have a _cjdroute.conf_ file for it in your
-home directory:
-
-    $ cp ~/cjdroute.conf roles/cjdns/files/alice.example.com-cjdroute.conf
-    $ ansible-playbook site.yml
-
-##### Generate a New Config
-
-If you're starting from scratch, you can generate a config with the
-`cjdroute` command on the managed host(s) _after_ you've done your first
-playbook run (expect a failure):
-
-    $ ansible-playbook site.yml
-    ...
-    FATAL: all hosts have already failed -- aborting
-    ...
-    $ ansible all -m shell -a "[[ -f /etc/cjdroute.conf ]] || /usr/bin/cjdroute --genconf > /tmp/cjdroute.conf"
-    $ ansible all -m fetch -a "src=/tmp/cjdroute.conf dest=roles/cjdns/files/{{ inventory_hostname }}-cjdroute.conf flat=yes"
-    $ ansible-playbook site.yml
-
 ### Firewall Considerations
 
-At this point, cjdns should be up and running on your host(s), but it will
-still have incoming connections blocked by the firewall. Now that we've
-pushed a _cjdroute.conf_ file, Hyperboriarch can determine which port
-needs to be opened up. Run the "iptables" tagged tasks one final time to
-make the change:
-
-    $ ansible-playbook site.yml --tags=iptables
-
-Only cjdns and ssh (TCP port 22) are allowed through the firewall out of
+Only ssh (TCP port 22) is allowed through the firewall out of
 the box, so you'll have to update the appropriate templates if you want to
 expose other services.
-
-Updating cjdns
---------------
-
-The cjdns project is alpha software and still under heavy development, so
-it's best to keep up-to-date with all of the upstream changes. You can
-easily rebuild the latest version and upgrade your systems by running the
-"cjdns" tagged tasks:
-
-    $ ansible-playbook site.yml --tags=cjdns
 
 Playbook Options
 ----------------
 
-Most of the tasks performed by Hyperboriarch can be customized by setting
+Most of the tasks performed by Ansarch can be customized by setting
 the value of particular variables. The default values for these variables
 are set and documented in the `group_vars/all` file on the controlling
 machine.
@@ -163,7 +89,8 @@ If you just want to override the values for a single run, you can use the
 License
 -------
 
-Hyperboriarch is provided under the terms of the
+Ansarch is provided under the terms of the
 [ISC License](https://en.wikipedia.org/wiki/ISC_license).
 
 Copyright &copy; 2013&#8211;2014, [Aaron Bull Schaefer](mailto:aaron@elasticdog.com).
+Copyright &copy; 2017 [Ulises M](mailto:ansarch@bfjournal.com).

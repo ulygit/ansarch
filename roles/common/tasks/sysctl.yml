@@ -1,14 +1,42 @@
 ---
 # This playbook configures runtime kernel parameters.
 
-- name: enable reverse path filtering
-  sysctl: name=net.ipv4.conf.all.rp_filter value={{ net_ipv4_conf_all_rp_filter }}
-    state=present sysctl_file=/etc/sysctl.d/net.conf
-
 - name: protect against tcp time-wait assassination hazards
   sysctl: name=net.ipv4.tcp_rfc1337 value={{ net_ipv4_tcp_rfc1337 }}
     state=present sysctl_file=/etc/sysctl.d/net.conf
 
 - name: allow reuse of sockets in time-wait state
   sysctl: name=net.ipv4.tcp_tw_reuse value={{ net_ipv4_tcp_tw_reuse }}
+    state=present sysctl_file=/etc/sysctl.d/net.conf
+
+- name: allow recycling of sockets in time-wait state
+  sysctl: name=net.ipv4.tcp_tw_recycle value={{ net_ipv4_tcp_tw_recycle }}
+    state=present sysctl_file=/etc/sysctl.d/net.conf
+
+- name: log martians (all)
+  sysctl: name=net.ipv4.conf.all.log_martians value={{ net_ipv4_log_martians }}
+    state=present sysctl_file=/etc/sysctl.d/net.conf
+
+- name: log martians (default)
+  sysctl: name=net.ipv4.conf.default.log_martians value={{ net_ipv4_log_martians }}
+    state=present sysctl_file=/etc/sysctl.d/net.conf
+
+- name: do not accept redirects (default)
+  sysctl: name=net.ipv4.conf.default.accept_redirects value={{ net_ipv4_accept_redirects }}
+    state=present sysctl_file=/etc/sysctl.d/net.conf
+
+- name: do not accept redirects (all)
+  sysctl: name=net.ipv4.conf.all.accept_redirects value={{ net_ipv4_accept_redirects }}
+    state=present sysctl_file=/etc/sysctl.d/net.conf
+
+- name: do not send redirects (default)
+  sysctl: name=net.ipv4.conf.default.send_redirects value={{ net_ipv4_send_redirects }}
+    state=present sysctl_file=/etc/sysctl.d/net.conf
+
+- name: do not send redirects (all)
+  sysctl: name=net.ipv4.conf.all.send_redirects value={{ net_ipv4_send_redirects }}
+    state=present sysctl_file=/etc/sysctl.d/net.conf
+
+- name: restricting access to kernel logs
+  sysctl: name=kernel.dmesg_restrict value={{ dmesg_restrict }}
     state=present sysctl_file=/etc/sysctl.d/net.conf

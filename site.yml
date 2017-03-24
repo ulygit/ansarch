@@ -7,10 +7,3 @@
   tags: common
   roles:
     - common
-
-- name: configure cjdns-related software
-  hosts: all
-  sudo: yes
-  tags: cjdns
-  roles:
-    - cjdns

@@ -1,6 +1,0 @@
----
-# This playbook contains plays to configure cjdns-related software.
-
-- include: cjdns.yml
-- include: cjdcmd.yml tags=cjdcmd
-  when: install_cjdcmd

@@ -13,13 +13,14 @@ admin_uid: 1111
 # ZA ES LK SE CH TW TR UA GB US UZ VN all
 country_code: "US"
 
-# whether or not to install the cjdcmd tool
-install_cjdcmd: true
-
 # sysctl runtime kernel parameters
-net_ipv4_conf_all_rp_filter: 1
 net_ipv4_tcp_rfc1337: 1
 net_ipv4_tcp_tw_reuse: 1
+net_ipv4_tcp_tw_recycle: 1
+net_ipv4_log_martians: 1
+net_ipv4_send_redirects: 0
+net_ipv4_accept_redirects: 0
+dmesg_restrict: 1
 
 # the network time protocol servers to utilize
 ntp_servers:
@@ -27,9 +28,6 @@ ntp_servers:
   - "1.us.pool.ntp.org"
   - "2.us.pool.ntp.org"
   - "3.us.pool.ntp.org"
-
-# where on the remote machine to build cjdns packages
-package_build_dir: "/usr/local/src"
 
 # the host's ip address(es) to bind ssh to;
 # ideally this should be your public ipv4 address
